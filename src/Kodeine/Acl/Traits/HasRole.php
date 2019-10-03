@@ -3,6 +3,7 @@
 namespace Kodeine\Acl\Traits;
 
 use Kodeine\Acl\Traits\HasPermission;
+use Illuminate\Support\Str;
 /**
  * Class HasRoleImplementation
  * @package Kodeine\Acl\Traits
@@ -48,10 +49,10 @@ trait HasRoleImplementation
             }
         );
 
-        $slugs = method_exists($this_roles, 'pluck') ? $this_roles->pluck('slug','id') : $this_roles->lists('slug','id');
+        $slugs = $this_roles->pluck('slug','id');
         return is_null($this_roles)
             ? []
-            : $this->collectionAsArray($slugs);
+            : $slugs->toArray();
     }
 
     /**
@@ -266,13 +267,13 @@ trait HasRoleImplementation
     public function __call($method, $arguments)
     {
         // Handle isRoleSlug() methods
-        if ( starts_with($method, 'is') and $method !== 'is' and ! starts_with($method, 'isWith') ) {
+        if ( Str::startsWith($method, 'is') and $method !== 'is' and ! Str::startsWith($method, 'isWith') ) {
             $role = substr($method, 2);
             return $this->hasRole($role);
         }
 
         // Handle canDoSomething() methods
-        if ( starts_with($method, 'can') and $method !== 'can' and ! starts_with($method, 'canWith') ) {
+        if ( Str::startsWith($method, 'can') and $method !== 'can' and ! Str::startsWith($method, 'canWith') ) {
             $permission = substr($method, 3);
             $permission = snake_case($permission, '.');
 

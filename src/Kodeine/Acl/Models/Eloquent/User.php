@@ -1,28 +1,37 @@
-<?php namespace Kodeine\Acl\Models\Eloquent;
+<?php
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Auth\Authenticatable;
+namespace Kodeine\Acl\Models\Eloquent;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
-
-use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Kodeine\Acl\Traits\HasRole;
 
-class User extends Model
+class User extends Authenticatable
 {
-    use Authenticatable, CanResetPassword, HasRole, SoftDeletes;
-    
+    use Notifiable, HasRole;
     /**
-     * The attributes that are fillable via mass assignment.
+     * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['username', 'first_name', 'last_name', 'email', 'password',];
-
+    protected $fillable = [
+        'name', 'email', 'password',
+    ];
     /**
-     * The database table used by the model.
+     * The attributes that should be hidden for arrays.
      *
-     * @var string
+     * @var array
      */
-    protected $table = 'users';
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 }

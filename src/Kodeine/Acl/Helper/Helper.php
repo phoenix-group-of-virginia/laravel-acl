@@ -8,28 +8,6 @@ trait Helper
 {
     /*
     |----------------------------------------------------------------------
-    | Collection methods compatible with L5.1.
-    |----------------------------------------------------------------------
-    |
-    */
-
-    /**
-     * Lists() method in l5.1 returns collection.
-     * This method fixes that issue for backward
-     * compatibility.
-     *
-     * @param $data
-     * @return mixed
-     */
-    protected function collectionAsArray($data)
-    {
-        return ($data instanceof Collection)
-            ? $data->toArray()
-            : $data;
-    }
-
-    /*
-    |----------------------------------------------------------------------
     | Slug Permission Related Protected Methods
     |----------------------------------------------------------------------
     |
